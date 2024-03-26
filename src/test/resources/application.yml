@@ -1,0 +1,42 @@
+# 테스트 환경에 필요한 추가적인 설정들을 여기에 작성합니다.
+spring:
+  config:
+    # import: aws-parameterstore:/config/ccs/
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+cloud:
+  aws:
+    credentials:
+      profile: ccs.service
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    s3:
+      bucket-name: temp-ccs-files
+      pre-signed:
+        expiration: 60
+
+#aws:
+#  paramstore:
+#    enabled: true
+#    prefix: /config
+#    profile-separator: .
+
+jwt:
+  secret: test-secret-key
+  expiration-ms:
+    access: 3600000 # 1시간
+    refresh: 604800000 # 7일

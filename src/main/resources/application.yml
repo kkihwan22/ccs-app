@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active: local
+    group:
+      local: local,common
+      dev: dev,common
+  config:
+    import: classpath:infra.yml
+
+---
+spring:
+  config:
+    import: aws-parameterstore:/config/ccs/
+    activate:
+      on-profile: common
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  messages:
+    basename: messages
+  thymeleaf:
+    cache: false
+aws:
+  credentials:
+    profile: ccs.service
+  region:
+    static: ap-northeast-2
+    auto: false
+  stack:
+    auto: false
+  s3:
+    bucket-name: temp-ccs-files
+    pre-signed:
+      expiration: 60
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: .
+
+jwt:
+  secret: ${jwt.secret}
+
+# logging 으로 분리 예정
+logging:
+  config: classpath:logback/logback.xml

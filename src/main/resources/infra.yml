@@ -1,0 +1,40 @@
+spring:
+  config:
+    import: aws-parameterstore:/config/ccs/
+    activate:
+      on-profile: local
+  datasource:
+    url: ${db.url}
+    username: ${db.user}
+    password: ${db.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          format_sql: true
+  data:
+    mongodb:
+      uri: mongodb+srv://keehwan:keehwan+2023@cluster0.uhrg3wg.mongodb.net/keehwan
+
+---
+spring:
+  config:
+    import: aws-parameterstore:/config/ccs/
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${db.url}
+    username: ${db.user}
+    password: ${db.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          format_sql: true
+  data:
+    mongodb:
+      uri: mongodb+srv://keehwan:keehwan+2023@cluster0.uhrg3wg.mongodb.net/keehwan
