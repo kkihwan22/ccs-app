@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+  <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mt-5">Login</h2>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#loginForm").submit(function (event) {
+      event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/login",
+        data: {
+          username: $("#username").val(),
+          password: $("#password").val()
+        },
+        success: function (response) {
+          // 성공 시 로직
+          console.log("Login successful:", response);
+        },
+        error: function (xhr, status, error) {
+          // 실패 시 로직
+          console.error("Login failed:", xhr.responseText);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

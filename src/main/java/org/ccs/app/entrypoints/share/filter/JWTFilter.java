@@ -21,7 +21,7 @@ import java.util.Objects;
 public class JWTFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(JWTFilter.class);
     private static final String AUTHORIZATION = "Authorization";
-    private static final String[] exclude = {"/login", "/public", "/access-token"};
+    private static final String[] exclude = {"/login", "/public", "/access-token", "/publish"};
 
     private JWTUtil jwtUtil;
     private UserAccountJpaRepository userAccountJpaRepository;
