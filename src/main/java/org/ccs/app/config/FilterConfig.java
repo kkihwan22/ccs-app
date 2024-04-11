@@ -73,18 +73,18 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<ApiContextFilter> apiContextFilter() {
-        FilterRegistrationBean<ApiContextFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new ApiContextFilter());
+    public FilterRegistrationBean<AuthenticationFilter> apiContextFilter() {
+        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AuthenticationFilter());
         registrationBean.addUrlPatterns("/api");
         registrationBean.setOrder(21);
         return registrationBean;
     }
 
     @Bean
-    public FilterRegistrationBean<AdminContextFilter> adminContextFilter() {
-        FilterRegistrationBean<AdminContextFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AdminContextFilter());
+    public FilterRegistrationBean<AuthorizationFilter> adminContextFilter() {
+        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AuthorizationFilter());
         registrationBean.addUrlPatterns("/admin");
         registrationBean.setOrder(22);
         return registrationBean;

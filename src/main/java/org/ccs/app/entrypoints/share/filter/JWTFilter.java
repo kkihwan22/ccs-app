@@ -15,13 +15,16 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * JWT 유무 판단 (orders: 3)
+ * JWT가 있다면 유저의 정보를 조회한다.
+ */
 public class JWTFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(JWTFilter.class);
     private static final String AUTHORIZATION = "Authorization";
-    private static final String[] exclude = {"/login", "/public", "/access-token", "/publish"};
+    // private static final String[] exclude = {"/login", "/public", "/access-token", "/publish"};
 
     private JWTUtil jwtUtil;
     private UserAccountJpaRepository userAccountJpaRepository;
@@ -37,56 +40,45 @@ public class JWTFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        // todo: 성능에 영향이 가는지 테스트 해보고 싶다.
+        try {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
-        String token = httpServletRequest.getHeader(AUTHORIZATION);
-        log.debug("[authorization] {}", token);
+            String token = httpServletRequest.getHeader(AUTHORIZATION);
+            log.debug("[authorization] {}", token);
 
-        if (Objects.isNull(token) && exclusionRequestPath(httpServletRequest)) {
-            AuthenticateHolder.setAuthenticate(new Authenticate());
-        } else {
-            boolean result = this.setAuthenticate(token);
-            if (!result) {
-                throw new InvalidAccessTokenException();
-            }
+            this.setAuthenticate(token);
+            chain.doFilter(request, response);
+        } finally {
+            AuthenticateHolder.clear();
         }
-
-        chain.doFilter(request, response);
-        AuthenticateHolder.clear();
-    }
-
-    private boolean exclusionRequestPath(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        log.info("uri : " + uri);
-        return Arrays.stream(exclude)
-                .anyMatch(it -> uri.startsWith(it));
     }
 
     /**
-     * 토큰에 대한 검증을 한다.
-     * 인증에 제외 될 path 이면서 토큰이 없는 경우 new Authenticate() 한다.
-     * 인증에 제외 될 path 이나 토큰이 존재 한다면 토큰에 대한 검증을 한다.
-     * 인증에 제외 된 path 가 아닌데 토큰이 없다면 인증에 실패한다.
+     * token 정보가 null 이면 Authenticated = false를 전달
+     * token 정보가 존재한다면 유효성을 검증
+     * token에 저장된 유저 조회 후 Authenticated에 셋팅
      * @param token
      * @return
      */
-    private boolean setAuthenticate(String token) {
-        if (Objects.isNull(token))
-            return false;
+    private void setAuthenticate(String token) {
+        if (Objects.isNull(token)) {
+            AuthenticateHolder.setAuthenticate(new Authenticate());
+            return;
+        }
 
         if (!token.startsWith("Bearer "))
-            return false;
+            throw new InvalidAccessTokenException();
 
-        String replacedToken = token.substring(7);
-        if (!jwtUtil.verify(replacedToken))
-            return false;
+        token = token.substring(7);
+        if (!jwtUtil.verify(token))
+            throw new InvalidAccessTokenException();
 
-        Long accountId = (Long) jwtUtil.decode(replacedToken);
+        Long accountId = (Long) jwtUtil.decode(token);
         log.debug("[account]: {}", accountId);
 
         UserAccount account = userAccountJpaRepository.findById(accountId).orElseThrow(NoSuchUserException::new);
         AuthenticateHolder.setAuthenticate(new Authenticate(account));
-        return true;
     }
 
 

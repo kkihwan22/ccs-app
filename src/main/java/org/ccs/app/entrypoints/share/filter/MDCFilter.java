@@ -8,6 +8,9 @@ import org.slf4j.MDC;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * 요청에 대한 trace_id 부여 (orders:1)
+ */
 public class MDCFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(MDCFilter.class);
 

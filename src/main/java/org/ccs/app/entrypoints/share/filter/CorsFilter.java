@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Cors에 대한 처리 (orders:2)
+ */
 public class CorsFilter implements Filter {
 
     @Override
