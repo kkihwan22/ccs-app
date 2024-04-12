@@ -12,6 +12,7 @@ import org.ccs.app.entrypoints.authenticate.model.SignupRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // todo: 인증메일 발송
     }
 
+    @Transactional
     @Override
     public TokenResult login(LoginRequest request) {
         UserAccount account = loginUsecase.authenticateUser(request.getEmail(), request.getPassword());

@@ -7,13 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Getter @ToString
-public class IssuedToken {
+public class TokenHistoryDocument {
     @Id
     private String id;
     private Long accountId;
     private String token;
 
-    public IssuedToken(Long accountId, String token) {
+    public TokenHistoryDocument(Long accountId, String token) {
         this.accountId = accountId;
         this.token = token;
     }
