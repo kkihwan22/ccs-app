@@ -1,7 +1,7 @@
 package org.ccs.app.core.authenticate.application.usecase;
 
-import org.ccs.app.core.authenticate.model.AuthenticationResult;
+import org.ccs.app.core.authenticate.model.TokenResult;
 
 public interface TokenReissueUsecase {
-    AuthenticationResult reissued(String token);
+    TokenResult reissued(String token);
 }

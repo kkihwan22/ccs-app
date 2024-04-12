@@ -2,7 +2,7 @@ package org.ccs.app.entrypoints.authenticate.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ccs.app.core.authenticate.model.AuthenticationResult;
+import org.ccs.app.core.authenticate.model.TokenResult;
 import org.ccs.app.entrypoints.authenticate.model.TokenIssueRequest;
 import org.ccs.app.entrypoints.authenticate.service.TokenService;
 import org.ccs.app.entrypoints.share.controller.BaseRestController;
@@ -19,9 +19,9 @@ public class TokenRestController implements BaseRestController {
     private final TokenService tokenService;
 
     @PostMapping("/access-token")
-    public ContentBody<AuthenticationResult> reissuedAccessToken(@RequestBody @Valid TokenIssueRequest request, BindingResult bindingResult) {
+    public ContentBody<TokenResult> reissuedAccessToken(@RequestBody @Valid TokenIssueRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
-        AuthenticationResult result = tokenService.reissued(request);
+        TokenResult result = tokenService.reissued(request);
         return ResponseFactory.success(result);
     }
 }
