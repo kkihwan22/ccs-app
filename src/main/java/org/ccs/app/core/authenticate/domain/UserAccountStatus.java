@@ -1,6 +1,7 @@
 package org.ccs.app.core.authenticate.domain;
 
-public enum AccountStatus {
+public enum UserAccountStatus {
+    UNVERIFIED,
     ENABLED,
     LOCKED,
     BLOCKED,

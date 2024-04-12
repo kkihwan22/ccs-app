@@ -3,12 +3,15 @@ package org.ccs.app.core.authenticate.application;
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.authenticate.application.usecase.LoginUsecase;
 import org.ccs.app.core.authenticate.application.usecase.LogoutUsecase;
+import org.ccs.app.core.authenticate.application.usecase.SignupUsecase;
 import org.ccs.app.core.authenticate.application.usecase.TokenReissueUsecase;
 import org.ccs.app.core.authenticate.domain.IssuedToken;
 import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.infra.repository.TokenHistoryMongoRepository;
 import org.ccs.app.core.authenticate.infra.repository.UserAccountJpaRepository;
 import org.ccs.app.core.authenticate.model.AuthenticationResult;
+import org.ccs.app.core.authenticate.model.SignupParameter;
+import org.ccs.app.core.share.authenticate.exception.ConflictUserEmailException;
 import org.ccs.app.core.share.authenticate.exception.IncorrectPasswordException;
 import org.ccs.app.core.share.authenticate.exception.NoSuchTokenException;
 import org.ccs.app.core.share.authenticate.exception.NoSuchUserException;
@@ -21,10 +24,18 @@ import static org.ccs.app.core.share.authenticate.token.JWTType.REFRESH;
 
 @RequiredArgsConstructor
 @Component
-public class AuthenticationApplication implements LoginUsecase, LogoutUsecase, TokenReissueUsecase {
+public class AuthenticationApplication implements SignupUsecase, LoginUsecase, LogoutUsecase, TokenReissueUsecase {
     private final UserAccountJpaRepository userAccountJpaRepository;
     private final TokenHistoryMongoRepository tokenHistoryMongoRepository;
     private final JWTUtil jwtUtil;
+
+    @Override
+    public UserAccount signup(SignupParameter parameter) {
+        if(userAccountJpaRepository.existsByEmail(parameter.getEmail())) {
+            throw new ConflictUserEmailException();
+        }
+        return userAccountJpaRepository.save(parameter.toEntity());
+    }
 
     @Transactional(noRollbackFor = IncorrectPasswordException.class)
     @Override

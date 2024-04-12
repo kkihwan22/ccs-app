@@ -1,7 +1,7 @@
 package org.ccs.app.core.user.domain;
 
-import org.ccs.app.core.authenticate.domain.AccountStatus;
 import org.ccs.app.core.authenticate.domain.UserAccount;
+import org.ccs.app.core.authenticate.domain.UserAccountStatus;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ class UserAccountTest {
         UserAccount account = UserAccount.builder()
                 .loginFailureCount(0)
                 .lastAccessAt(now)
-                .status(AccountStatus.ENABLED)
+                .status(UserAccountStatus.ENABLED)
                 .password("password!234")
                 .build();
 

@@ -2,21 +2,21 @@ package org.ccs.app.core.authenticate.domain.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.ccs.app.core.authenticate.domain.Role;
+import org.ccs.app.core.authenticate.domain.RoleCode;
 
 @Converter
-public class RoleToStringConverter implements AttributeConverter<Role, String>  {
+public class RoleCodeToStringConverter implements AttributeConverter<RoleCode, String>  {
     @Override
-    public String convertToDatabaseColumn(Role attribute) {
+    public String convertToDatabaseColumn(RoleCode attribute) {
         return (attribute != null)
                 ? attribute.name()
                 : null;
     }
 
     @Override
-    public Role convertToEntityAttribute(String dbData) {
+    public RoleCode convertToEntityAttribute(String dbData) {
         return dbData != null
-                ? Role.valueOf(dbData)
+                ? RoleCode.valueOf(dbData)
                 : null;
     }
 }

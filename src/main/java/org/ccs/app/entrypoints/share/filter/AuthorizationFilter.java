@@ -3,7 +3,7 @@ package org.ccs.app.entrypoints.share.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
-import org.ccs.app.core.authenticate.domain.Role;
+import org.ccs.app.core.authenticate.domain.RoleCode;
 import org.ccs.app.core.share.authenticate.Authenticate;
 import org.ccs.app.core.share.authenticate.AuthenticateHolder;
 import org.ccs.app.entrypoints.share.model.ContentBody;
@@ -25,7 +25,7 @@ public class AuthorizationFilter implements Filter {
     }
 
     private boolean hasAdminRole(Authenticate authenticate) {
-        return authenticate != null && authenticate.getRoles().contains(Role.ADMIN);
+        return authenticate != null && authenticate.getRoleCodes().contains(RoleCode.ADMIN);
     }
 
     private void sendAccessDeniedResponse(ServletResponse response) throws IOException {
