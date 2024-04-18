@@ -4,8 +4,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.infra.repository.UserAccountJpaRepository;
-import org.ccs.app.core.share.authenticate.Authenticate;
-import org.ccs.app.core.share.authenticate.AuthenticateHolder;
+import org.ccs.app.core.share.authenticate.AuthenticatedHolder;
+import org.ccs.app.core.share.authenticate.AuthenticatedUserDetails;
 import org.ccs.app.core.share.authenticate.exception.InvalidAccessTokenException;
 import org.ccs.app.core.share.authenticate.exception.NoSuchUserException;
 import org.ccs.app.core.share.authenticate.token.JWTUtil;
@@ -50,7 +50,7 @@ public class JWTFilter implements Filter {
             this.setAuthenticate(token);
             chain.doFilter(request, response);
         } finally {
-            AuthenticateHolder.clear();
+            AuthenticatedHolder.clear();
         }
     }
 
@@ -63,7 +63,7 @@ public class JWTFilter implements Filter {
      */
     private void setAuthenticate(String token) {
         if (Objects.isNull(token)) {
-            AuthenticateHolder.setAuthenticate(new Authenticate());
+            AuthenticatedHolder.setAuthenticate(new AuthenticatedUserDetails());
             return;
         }
 
@@ -74,12 +74,10 @@ public class JWTFilter implements Filter {
         if (!jwtUtil.verify(token))
             throw new InvalidAccessTokenException();
 
-        Long accountId = (Long) jwtUtil.decode(token);
+        Long accountId = Long.valueOf(jwtUtil.decode(token));
         log.debug("[account]: {}", accountId);
 
         UserAccount account = userAccountJpaRepository.findById(accountId).orElseThrow(NoSuchUserException::new);
-        AuthenticateHolder.setAuthenticate(new Authenticate(account));
+        AuthenticatedHolder.setAuthenticate(new AuthenticatedUserDetails(account));
     }
-
-
 }

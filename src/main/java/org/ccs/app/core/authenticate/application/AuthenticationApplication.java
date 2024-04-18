@@ -2,7 +2,6 @@ package org.ccs.app.core.authenticate.application;
 
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.authenticate.application.usecase.LoginUsecase;
-import org.ccs.app.core.authenticate.application.usecase.LogoutUsecase;
 import org.ccs.app.core.authenticate.application.usecase.SignupUsecase;
 import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.infra.repository.TokenHistoryMongoRepository;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class AuthenticationApplication implements SignupUsecase, LoginUsecase, LogoutUsecase {
+public class AuthenticationApplication implements SignupUsecase, LoginUsecase{
     private final UserAccountJpaRepository userAccountJpaRepository;
     private final TokenHistoryMongoRepository tokenHistoryMongoRepository;
     private final JWTUtil jwtUtil;
@@ -38,11 +37,6 @@ public class AuthenticationApplication implements SignupUsecase, LoginUsecase, L
         account.confirmPassword(password);
 
         return account;
-    }
-
-    @Override
-    public void logout() {
-        // FIXME: 나중에 구현할 기능
     }
 
 //    @Override

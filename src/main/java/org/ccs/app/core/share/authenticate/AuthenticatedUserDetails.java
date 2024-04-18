@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @ToString
-public class Authenticate {
+public class AuthenticatedUserDetails {
     private boolean authenticated;
     private Long accountId;
     private String email;
@@ -18,11 +18,11 @@ public class Authenticate {
     // fixme: 나중에 추가 정보를 담는 용도....
     private UserDetails userDetails;
 
-    public Authenticate() {
+    public AuthenticatedUserDetails() {
         this.authenticated = false;
     }
 
-    public Authenticate(UserAccount account) {
+    public AuthenticatedUserDetails(UserAccount account) {
         this.authenticated = true;
         this.accountId = account.getId();
         this.email = account.getEmail();

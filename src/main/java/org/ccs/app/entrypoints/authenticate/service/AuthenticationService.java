@@ -8,4 +8,6 @@ public interface AuthenticationService {
 
     void signup(SignupRequest request);
     TokenResult login(LoginRequest request);
+
+    void logout(String token, Long id);
 }

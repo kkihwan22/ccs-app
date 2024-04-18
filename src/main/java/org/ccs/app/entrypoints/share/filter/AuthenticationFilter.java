@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.ccs.app.core.share.authenticate.Authenticate;
-import org.ccs.app.core.share.authenticate.AuthenticateHolder;
+import org.ccs.app.core.share.authenticate.AuthenticatedHolder;
+import org.ccs.app.core.share.authenticate.AuthenticatedUserDetails;
 import org.ccs.app.entrypoints.share.model.ContentBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +23,13 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         boolean matched = Arrays.stream(included)
                 .anyMatch(it -> httpServletRequest.getRequestURI().startsWith(it));
 
         if (matched) {
-            Authenticate authenticate = AuthenticateHolder.get();
-            if (!authenticate.isAuthenticated()) {
+            AuthenticatedUserDetails authenticatedUserDetails = AuthenticatedHolder.get();
+            if (!authenticatedUserDetails.isAuthenticated()) {
                 sendUnauthenticatedResponse(response);
                 return;
             }

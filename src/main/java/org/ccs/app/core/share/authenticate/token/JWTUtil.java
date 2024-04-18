@@ -14,12 +14,12 @@ public class JWTUtil {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public String issued(JWTType type, Long userId) {
+    public String issued(JWTType type, Long accountId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + type.getExpirationMs());
 
         return Jwts.builder()
-                .setSubject(Long.toString(userId)) // 토큰 subject를 사용자 ID로 설정
+                .setSubject(Long.toString(accountId)) // 토큰 subject를 사용자 ID로 설정
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret) // 토큰 서명
@@ -36,7 +36,7 @@ public class JWTUtil {
         }
     }
 
-    public Object decode(String token) {
+    public String decode(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 }

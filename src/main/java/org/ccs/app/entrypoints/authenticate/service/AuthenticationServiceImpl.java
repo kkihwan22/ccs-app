@@ -3,8 +3,10 @@ package org.ccs.app.entrypoints.authenticate.service;
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.authenticate.application.usecase.LoginUsecase;
 import org.ccs.app.core.authenticate.application.usecase.SignupUsecase;
+import org.ccs.app.core.authenticate.application.usecase.TokenExpiredUsecase;
 import org.ccs.app.core.authenticate.application.usecase.TokenIssueUsecase;
 import org.ccs.app.core.authenticate.domain.UserAccount;
+import org.ccs.app.core.authenticate.model.LogoutParameter;
 import org.ccs.app.core.authenticate.model.SignupParameter;
 import org.ccs.app.core.authenticate.model.TokenResult;
 import org.ccs.app.entrypoints.authenticate.model.LoginRequest;
@@ -20,6 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final static Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     private final SignupUsecase signupUsecase;
     private final LoginUsecase loginUsecase;
+    private final TokenExpiredUsecase tokenExpiredUsecase;
     private final TokenIssueUsecase tokenIssueUsecase;
 
     @Override
@@ -33,5 +36,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public TokenResult login(LoginRequest request) {
         UserAccount account = loginUsecase.authenticateUser(request.getEmail(), request.getPassword());
         return tokenIssueUsecase.issued(account);
+    }
+
+    @Override
+    public void logout(String token, Long id) {
+        tokenExpiredUsecase.expired(new LogoutParameter(token,id));
     }
 }

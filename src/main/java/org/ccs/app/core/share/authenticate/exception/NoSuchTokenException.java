@@ -10,6 +10,6 @@ public class NoSuchTokenException extends UnauthenticatedException {
     }
 
     public NoSuchTokenException(JWTType type) {
-        this(ErrorCode.NO_SUCH_TOKEN.getCode(), ErrorCode.NO_SUCH_TOKEN.getMessage() + "Token Type - " + type.name());
+        this(ErrorCode.NO_SUCH_TOKEN.getCode(), ErrorCode.NO_SUCH_TOKEN.getMessage() + " Token Type - " + type.name());
     }
 }

@@ -22,8 +22,8 @@ public class TokenHistory extends BaseCreatedAndUpdatedDateTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "account_id")
+    private Long accountId;
 
     @Column(name = "token")
     private String token;
