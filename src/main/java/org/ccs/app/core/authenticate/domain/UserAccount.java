@@ -44,6 +44,19 @@ public class UserAccount extends BaseCreatedAndUpdatedDateTime {
     @Column(name = "password_changed_dt")
     private LocalDateTime passwordChangedAt;
 
+    public UserAccount(String email, String password) {
+        this.validateNullOrBlank(email);
+        this.email = email;
+        this.password = password;
+    }
+
+    private void validateNullOrBlank(String str) {
+        if (Objects.isNull(str) || str.isBlank()) {
+            throw new IllegalArgumentException("null이거나 공백일 수 없습니다.");
+        }
+    }
+
+
     public void confirmPassword(String password) {
         if (!Objects.equals(this.password, password)) {
             loginFailureCount = loginFailureCount + 1;
@@ -56,4 +69,6 @@ public class UserAccount extends BaseCreatedAndUpdatedDateTime {
         this.lastAccessAt = LocalDateTime.now();
         this.loginFailureCount = 0;
     }
+
+
 }
