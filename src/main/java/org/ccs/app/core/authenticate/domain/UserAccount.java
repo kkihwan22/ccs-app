@@ -19,7 +19,7 @@ import java.util.Objects;
 @DynamicUpdate
 @DynamicInsert
 @Getter
-@ToString(exclude = "roles")
+@ToString
 public class UserAccount extends BaseCreatedAndUpdatedDateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
