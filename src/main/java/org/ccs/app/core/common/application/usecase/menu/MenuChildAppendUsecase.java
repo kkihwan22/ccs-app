@@ -1,4 +1,4 @@
-package org.ccs.app.core.common.application.usecase;
+package org.ccs.app.core.common.application.usecase.menu;
 
 import org.ccs.app.core.common.model.MenuItemAppendParameter;
 

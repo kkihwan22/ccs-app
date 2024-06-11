@@ -1,8 +1,8 @@
 package org.ccs.app.core.common.application;
 
 import lombok.RequiredArgsConstructor;
-import org.ccs.app.core.common.application.usecase.MenuItemGetUsecase;
-import org.ccs.app.core.common.application.usecase.MenuRootCreateUsecase;
+import org.ccs.app.core.common.application.usecase.menu.MenuItemGetUsecase;
+import org.ccs.app.core.common.application.usecase.menu.MenuRootCreateUsecase;
 import org.ccs.app.core.common.domain.Menu;
 import org.ccs.app.core.common.exception.NotFoundMenuItemException;
 import org.ccs.app.core.common.infra.MenuRepository;
