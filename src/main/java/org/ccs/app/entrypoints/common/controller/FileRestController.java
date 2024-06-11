@@ -26,6 +26,6 @@ public class FileRestController implements BaseRestController {
     public ContentBody<PreSignedResponse> preSigned(@RequestBody @Valid PreSignedGenerateRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
         PreSignedResponse response = preSignedService.generate(request.objectKey());
-        return ResponseFactory.success(response);
+        return ResponseFactory.ok(response);
     }
 }

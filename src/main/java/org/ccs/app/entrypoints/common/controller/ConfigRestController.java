@@ -15,6 +15,6 @@ public class ConfigRestController implements BaseRestController {
 
     @GetMapping("/client-key")
     public ContentBody<String> issuedClientKey() {
-        return ResponseFactory.success(UUID.randomUUID().toString());
+        return ResponseFactory.ok(UUID.randomUUID().toString());
     }
 }

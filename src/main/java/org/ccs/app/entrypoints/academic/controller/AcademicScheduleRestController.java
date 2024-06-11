@@ -31,7 +31,7 @@ public class AcademicScheduleRestController implements BaseRestController {
         List<LocalDate> results = academicScheduleService.generateAcademicSchedules(request);
         log.debug("results: {}");
 
-        return ResponseFactory.success(results);
+        return ResponseFactory.ok(results);
     }
 
 }

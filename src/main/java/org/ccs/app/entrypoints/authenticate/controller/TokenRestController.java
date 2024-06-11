@@ -22,6 +22,6 @@ public class TokenRestController implements BaseRestController {
     public ContentBody<TokenResult> reissuedAccessToken(@RequestBody @Valid TokenIssueRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
         TokenResult result = tokenService.reissued(request);
-        return ResponseFactory.success(result);
+        return ResponseFactory.ok(result);
     }
 }

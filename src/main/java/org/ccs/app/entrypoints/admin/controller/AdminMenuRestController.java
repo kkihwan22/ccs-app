@@ -27,6 +27,6 @@ public class AdminMenuRestController implements BaseRestController {
         hasError(bindingResult);
         AdminMenuResponse response = adminMenuService.createMenu(request);
         log.debug("[createMenu] response : {}", response);
-        return ResponseFactory.success(response);
+        return ResponseFactory.ok(response);
     }
 }

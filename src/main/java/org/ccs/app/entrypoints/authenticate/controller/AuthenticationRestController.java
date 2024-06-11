@@ -26,20 +26,20 @@ public class AuthenticationRestController implements BaseRestController {
     public ContentBody<String> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
         authenticationService.signup(request);
-        return ResponseFactory.success("success");
+        return ResponseFactory.ok("success");
     }
 
     @PostMapping("/login")
     public ContentBody<TokenResult> login(@Valid @RequestBody LoginRequest loginRequest) {
         TokenResult result = authenticationService.login(loginRequest);
-        return ResponseFactory.success(result);
+        return ResponseFactory.ok(result);
     }
 
     @PostMapping("/logout")
     public ContentBody<String> logout(@Valid @NotBlank(message = "token is null.") @RequestHeader(value = "Authorization") String token) {
         Long id = AuthenticatedHolder.get().getAccountId();
         authenticationService.logout(token, id);
-        return ResponseFactory.success("success");
+        return ResponseFactory.ok("success");
     }
 
 
