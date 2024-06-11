@@ -29,4 +29,11 @@ public class ClientProperty extends BaseCreatedAndUpdatedDateTime {
     public ClientProperty(String key, String propertyValue, Boolean usingIos, Boolean usingAos, Boolean usingWeb) {
         this(null, key, propertyValue, usingIos, usingAos, usingWeb);
     }
+
+    public void putAll(ClientProperty property) {
+        this.propertyValue = property.getPropertyValue();
+        this.usingIos = property.getUsingIos();
+        this.usingAos = property.getUsingAos();
+        this.usingWeb = property.getUsingWeb();
+    }
 }

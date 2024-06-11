@@ -8,14 +8,12 @@ import org.ccs.app.core.share.model.EntityBuildable;
 
 public interface ClientPropertyUpdateUsecase {
 
-    Long update(UpdateParameter parameter);
+    Long update(Long id, UpdateParameter parameter);
 
     @AllArgsConstructor
     @Getter
     @ToString
     class UpdateParameter implements EntityBuildable<ClientProperty> {
-        private Long id;
-        private String key;
         private String propertyValue;
         private Boolean usingIos;
         private Boolean usingAos;
@@ -23,7 +21,7 @@ public interface ClientPropertyUpdateUsecase {
 
         @Override
         public ClientProperty toEntity() {
-            return new ClientProperty(key, propertyValue, usingIos, usingAos, usingWeb);
+            return new ClientProperty(null, propertyValue, usingIos, usingAos, usingWeb);
         }
     }
 }

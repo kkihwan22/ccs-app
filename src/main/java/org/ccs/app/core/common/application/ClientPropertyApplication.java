@@ -1,4 +1,4 @@
-package org.ccs.app.core.common.application.usecase;
+package org.ccs.app.core.common.application;
 
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.common.application.usecase.clientproperty.ClientPropertyCreateUsecase;
@@ -21,7 +21,10 @@ public class ClientPropertyApplication
     }
 
     @Override
-    public Long update(UpdateParameter parameter) {
+    public Long update(Long id, UpdateParameter parameter) {
+
+        // todo: find id
+
         ClientProperty entity = parameter.toEntity();
         return null;
     }
