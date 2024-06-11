@@ -1,4 +1,4 @@
-package org.ccs.app.core.share.support;
+package org.ccs.app.core.share.model;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -7,17 +7,17 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Getter @ToString
-public class BatchBetweenDateTime extends BaseBetweenDateTime {
+public class BatchBetween extends BaseBetween {
 
-    public BatchBetweenDateTime(LocalDateTime startedAt, LocalDateTime endedAt) {
+    public BatchBetween(LocalDateTime startedAt, LocalDateTime endedAt) {
         super(startedAt, endedAt);
     }
 
-    public BatchBetweenDateTime(LocalDateTime basedDateTime) {
+    public BatchBetween(LocalDateTime basedDateTime) {
         this(basedDateTime.truncatedTo(ChronoUnit.DAYS).minusMinutes(10L), basedDateTime.minusMinutes(10L));
     }
 
-    public BatchBetweenDateTime() {
+    public BatchBetween() {
         this(LocalDateTime.now());
     }
 }

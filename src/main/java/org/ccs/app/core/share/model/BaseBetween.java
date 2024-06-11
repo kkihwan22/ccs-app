@@ -1,4 +1,4 @@
-package org.ccs.app.core.share.support;
+package org.ccs.app.core.share.model;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -6,12 +6,12 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Getter @ToString
-public abstract class BaseBetweenDateTime {
+public abstract class BaseBetween {
 
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 
-    protected BaseBetweenDateTime(LocalDateTime startedAt, LocalDateTime endedAt) {
+    protected BaseBetween(LocalDateTime startedAt, LocalDateTime endedAt) {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
     }
