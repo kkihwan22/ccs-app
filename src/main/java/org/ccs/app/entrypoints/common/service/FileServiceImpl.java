@@ -4,7 +4,8 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
-import org.ccs.app.entrypoints.common.model.PreSignedResponse;
+import org.ccs.app.entrypoints.common.model.FileDTO.PreSignedGenerateRequest;
+import org.ccs.app.entrypoints.common.model.FileDTO.PreSignedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +16,10 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Service
-public class PreSignedServiceImpl implements PreSignedService {
-    private final static Logger log = LoggerFactory.getLogger(PreSignedServiceImpl.class);
+public class FileServiceImpl implements FileService {
+    private final static Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
 
-    private final AmazonS3 s3Client;
+    private final AmazonS3 s3;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
@@ -27,10 +28,11 @@ public class PreSignedServiceImpl implements PreSignedService {
     private long expiration;
 
     @Override
-    public PreSignedResponse generate(String objectKey) {
-        URL preSigned = s3Client.generatePresignedUrl(request(bucketName, objectKey, this.expiration));
-        log.debug("pre-signed URL: {}", preSigned.toString());
-        return new PreSignedResponse(preSigned.toString(), this.expiration);
+    public PreSignedResponse generatePreSignedUrl(PreSignedGenerateRequest request) {
+        URL preSignedUrl = s3.generatePresignedUrl(request(bucketName, request.objectKey(), this.expiration));
+        log.debug("pre-signed URL: {}", preSignedUrl.toString());
+        return new PreSignedResponse(preSignedUrl.toString(), this.expiration);
+
     }
 
     private GeneratePresignedUrlRequest request(String bucketName, String objectKey, long expiration) {

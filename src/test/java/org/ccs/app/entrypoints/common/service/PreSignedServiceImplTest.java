@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Import;
 class PreSignedServiceImplTest {
 
     @Autowired
-    private PreSignedService preSignedService;
+    private FileService fileService;
 
     @Test
     void generateTest() {
 
-        preSignedService.generate("temp/20231225/first");
+        fileService.generatePreSignedUrl("temp/20231225/first");
     }
 }

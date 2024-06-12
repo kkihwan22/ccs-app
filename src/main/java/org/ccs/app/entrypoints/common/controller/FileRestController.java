@@ -2,9 +2,9 @@ package org.ccs.app.entrypoints.common.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ccs.app.entrypoints.common.model.PreSignedGenerateRequest;
-import org.ccs.app.entrypoints.common.model.PreSignedResponse;
-import org.ccs.app.entrypoints.common.service.PreSignedService;
+import org.ccs.app.entrypoints.common.model.FileDTO.PreSignedGenerateRequest;
+import org.ccs.app.entrypoints.common.model.FileDTO.PreSignedResponse;
+import org.ccs.app.entrypoints.common.service.FileService;
 import org.ccs.app.entrypoints.share.controller.BaseRestController;
 import org.ccs.app.entrypoints.share.controller.ResponseFactory;
 import org.ccs.app.entrypoints.share.model.ContentBody;
@@ -20,12 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileRestController implements BaseRestController {
     private final static Logger log = LoggerFactory.getLogger(FileRestController.class);
 
-    private final PreSignedService preSignedService;
+    private final FileService fileService;
 
     @PutMapping("/presigned")
     public ContentBody<PreSignedResponse> preSigned(@RequestBody @Valid PreSignedGenerateRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
-        PreSignedResponse response = preSignedService.generate(request.objectKey());
-        return ResponseFactory.ok(response);
+        return ResponseFactory.ok(fileService.generatePreSignedUrl(request));
     }
 }
