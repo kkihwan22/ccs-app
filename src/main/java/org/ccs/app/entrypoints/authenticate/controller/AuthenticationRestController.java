@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.authenticate.model.TokenResult;
 import org.ccs.app.core.share.authenticate.AuthenticatedHolder;
-import org.ccs.app.entrypoints.authenticate.model.LoginRequest;
 import org.ccs.app.entrypoints.authenticate.model.SignupRequest;
 import org.ccs.app.entrypoints.authenticate.service.AuthenticationService;
 import org.ccs.app.entrypoints.share.controller.BaseRestController;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.ccs.app.entrypoints.authenticate.model.AuthenticationDTO.LoginRequest;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,8 +31,14 @@ public class AuthenticationRestController implements BaseRestController {
     }
 
     @PostMapping("/login")
-    public ContentBody<TokenResult> login(@Valid @RequestBody LoginRequest loginRequest) {
-        TokenResult result = authenticationService.login(loginRequest);
+    public ContentBody<TokenResult> login(@Valid @RequestBody LoginRequest request, BindingResult bindingResult) {
+        hasError(bindingResult);
+
+
+
+
+
+        TokenResult result = authenticationService.login(request);
         return ResponseFactory.ok(result);
     }
 

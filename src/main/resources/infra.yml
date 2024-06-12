@@ -1,6 +1,5 @@
 spring:
   config:
-    import: aws-parameterstore:/config/ccs/
     activate:
       on-profile: local
   datasource:

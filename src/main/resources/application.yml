@@ -10,7 +10,6 @@ spring:
 ---
 spring:
   config:
-    import: aws-parameterstore:/config/ccs/
     activate:
       on-profile: common
   jackson:
@@ -40,7 +39,8 @@ aws:
     profile-separator: .
 
 jwt:
-  secret: ${jwt.secret}
+  # secret: ${jwt.secret}
+  secret: secret
 
 # logging 으로 분리 예정
 logging:

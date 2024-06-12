@@ -9,7 +9,7 @@ import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.model.LogoutParameter;
 import org.ccs.app.core.authenticate.model.SignupParameter;
 import org.ccs.app.core.authenticate.model.TokenResult;
-import org.ccs.app.entrypoints.authenticate.model.LoginRequest;
+import org.ccs.app.entrypoints.authenticate.model.AuthenticationDTO.LoginRequest;
 import org.ccs.app.entrypoints.authenticate.model.SignupRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     @Override
     public TokenResult login(LoginRequest request) {
-        UserAccount account = loginUsecase.authenticateUser(request.getEmail(), request.getPassword());
+        UserAccount account = loginUsecase.authenticateUser(request.email(), request.password());
         return tokenIssueUsecase.issued(account);
     }
 
