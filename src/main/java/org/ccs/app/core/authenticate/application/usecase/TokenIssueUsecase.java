@@ -1,9 +1,9 @@
 package org.ccs.app.core.authenticate.application.usecase;
 
 import org.ccs.app.core.authenticate.domain.UserAccount;
-import org.ccs.app.core.authenticate.model.TokenResult;
+import org.ccs.app.core.share.authenticate.token.JWTType;
 
 public interface TokenIssueUsecase {
 
-    TokenResult issued(UserAccount account);
+    String issued(UserAccount account, JWTType type);
 }

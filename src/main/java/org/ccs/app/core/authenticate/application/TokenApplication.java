@@ -8,7 +8,6 @@ import org.ccs.app.core.authenticate.domain.TokenHistory;
 import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.infra.repository.TokenHistoryJpaRepository;
 import org.ccs.app.core.authenticate.model.LogoutParameter;
-import org.ccs.app.core.authenticate.model.TokenResult;
 import org.ccs.app.core.share.authenticate.exception.NoSuchTokenException;
 import org.ccs.app.core.share.authenticate.token.JWTType;
 import org.ccs.app.core.share.authenticate.token.JWTUtil;
@@ -23,26 +22,21 @@ public class TokenApplication implements TokenIssueUsecase, TokenReissueUsecase,
 
     @Transactional
     @Override
-    public TokenResult issued(UserAccount account) {
-        TokenResult result = new TokenResult(jwtUtil.issued(
-                JWTType.ACCESS, account.getId()),
-                jwtUtil.issued(JWTType.REFRESH, account.getId()),
-                JWTType.ACCESS.getExpirationMs());
+    public String issued(UserAccount account, JWTType type) {
+        return jwtUtil.issued(type, account.getId());
 
-        String token = new StringBuilder().append(result.getTokenType()).append(" ").append(result.getRefreshToken()).toString();
+//        TokenHistory tokenHistory = TokenHistory.builder()
+//                .accountId(account.getId())
+//                .token(token)
+//                .expiredAt(result.getExpiredAt())
+//                .build();
+//
+//        tokenHistoryJpaRepository.save(tokenHistory);
 
-        TokenHistory tokenHistory = TokenHistory.builder()
-                .accountId(account.getId())
-                .token(token)
-                .expiredAt(result.getExpiredAt())
-                .build();
-
-        tokenHistoryJpaRepository.save(tokenHistory);
-        return result;
     }
 
     @Override
-    public TokenResult reissued(String token) {
+    public String reissued(String token) {
         return null;
     }
 

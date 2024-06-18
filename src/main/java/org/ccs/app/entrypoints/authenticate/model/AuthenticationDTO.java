@@ -3,14 +3,16 @@ package org.ccs.app.entrypoints.authenticate.model;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.ccs.app.core.authenticate.model.SignupParameter;
 
 public class AuthenticationDTO {
 
-    public record LoginRequest(
-            @NotBlank(message = "request.valid.email.required") @Email(message = "request.valid.invalid.email")
-            String email,
-
-            @NotBlank(message = "request.valid.password.required") @Size(min = 8, max = 64)
-            String password
-    ) {}
+    public record SignupRequest(
+            @NotBlank @Email String email,
+            @NotBlank @Size(min = 8, max = 64) String password
+    ) {
+        public SignupParameter to() {
+            return new SignupParameter(email, password);
+        }
+    }
 }

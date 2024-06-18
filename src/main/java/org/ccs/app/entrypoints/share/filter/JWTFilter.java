@@ -15,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -24,7 +25,8 @@ import java.util.Objects;
 public class JWTFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(JWTFilter.class);
     private static final String AUTHORIZATION = "Authorization";
-    // private static final String[] exclude = {"/login", "/public", "/access-token", "/publish"};
+    private static final String TOKEN_PREFIX = "Bearer";
+    private static final String[] exclude = {"/login", "/logout", "/signup", "/pages", "/webjars", "/static", "/dist", "/", "/index", "favicon.ico"};
 
     private JWTUtil jwtUtil;
     private UserAccountJpaRepository userAccountJpaRepository;
@@ -40,17 +42,42 @@ public class JWTFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // todo: 성능에 영향이 가는지 테스트 해보고 싶다.
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            String path = httpServletRequest.getRequestURI();
 
-            String token = httpServletRequest.getHeader(AUTHORIZATION);
-            log.debug("[authorization] {}", token);
+            if (Arrays.stream(exclude).anyMatch(item -> item.startsWith(path))) {
+                chain.doFilter(request, response);
+            }
 
-            this.setAuthenticate(token);
+            String authValue = httpServletRequest.getHeader(AUTHORIZATION);
+            log.debug("[authorization] {}", authValue);
+
+            if (Objects.nonNull(authValue)) {
+                String token = this.validate(authValue);
+                this.setAuthenticate(token);
+            } else {
+                AuthenticatedHolder.setAuthenticate(new AuthenticatedUserDetails());
+            }
+
             chain.doFilter(request, response);
         } finally {
             AuthenticatedHolder.clear();
+        }
+    }
+
+    private String validate(String authValue) {
+        String[] temp = authValue.split(" ");
+        if (temp.length != 2) {
+            throw new InvalidAccessTokenException();
+        }
+
+        if (!TOKEN_PREFIX.contentEquals(temp[0])) {
+            throw new InvalidAccessTokenException();
+        }
+
+        if (jwtUtil.verify(temp[1])) {
+            throw new InvalidAccessTokenException();
         }
     }
 
@@ -62,22 +89,12 @@ public class JWTFilter implements Filter {
      * @return
      */
     private void setAuthenticate(String token) {
-        if (Objects.isNull(token)) {
-            AuthenticatedHolder.setAuthenticate(new AuthenticatedUserDetails());
-            return;
-        }
-
-        if (!token.startsWith("Bearer "))
-            throw new InvalidAccessTokenException();
-
-        token = token.substring(7);
-        if (!jwtUtil.verify(token))
-            throw new InvalidAccessTokenException();
-
         Long accountId = Long.valueOf(jwtUtil.decode(token));
         log.debug("[account]: {}", accountId);
 
         UserAccount account = userAccountJpaRepository.findById(accountId).orElseThrow(NoSuchUserException::new);
         AuthenticatedHolder.setAuthenticate(new AuthenticatedUserDetails(account));
     }
+
+
 }

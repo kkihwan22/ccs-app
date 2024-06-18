@@ -39,6 +39,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    // spring-jcl와 commons-logging의 충돌 해소
+    implementation('org.springframework.boot:spring-boot-starter') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
     //querydsl 설정 추가
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 

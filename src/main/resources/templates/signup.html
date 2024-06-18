@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+  <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mt-5">간편 회원가입</h2>
+      <form id="signupForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <button type="button" id="clearButton" class="btn btn-secondary">Clear</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/share/rest.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#signupForm").submit(function (event) {
+      event.preventDefault();
+
+      let data = {
+        email: $("#email").val(),
+        password: $("#password").val()
+      }
+
+      send("POST", "/signup", data, function (response) {
+        alert("Sign up successful!");
+        window.location.href = "/login";
+      }, function (xhr, status, error) {
+        console.error("Sign up failed:", xhr.responseText);
+      });
+    });
+
+    $("#clearButton").click(function () {
+      $("#signupForm")[0].reset(); // 폼 초기화
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,22 +1,15 @@
 package org.ccs.app.entrypoints.authenticate.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.ccs.app.core.authenticate.model.TokenResult;
-import org.ccs.app.core.share.authenticate.AuthenticatedHolder;
-import org.ccs.app.entrypoints.authenticate.model.SignupRequest;
+import org.ccs.app.entrypoints.authenticate.model.AuthenticationDTO.SignupRequest;
 import org.ccs.app.entrypoints.authenticate.service.AuthenticationService;
 import org.ccs.app.entrypoints.share.controller.BaseRestController;
 import org.ccs.app.entrypoints.share.controller.ResponseFactory;
 import org.ccs.app.entrypoints.share.model.ContentBody;
+import org.ccs.app.entrypoints.share.model.SuccessBody;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-
-import static org.ccs.app.entrypoints.authenticate.model.AuthenticationDTO.LoginRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,32 +17,19 @@ public class AuthenticationRestController implements BaseRestController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ContentBody<String> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
+    public ContentBody<SuccessBody<String>> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
         authenticationService.signup(request);
-        return ResponseFactory.ok("success");
+        return ResponseFactory.success("success");
     }
 
-    @PostMapping("/login")
-    public ContentBody<TokenResult> login(@Valid @RequestBody LoginRequest request, BindingResult bindingResult) {
-        hasError(bindingResult);
+    @GetMapping("/auth/verify/email")
+    public void verifyEmail() {
 
-
-
-
-
-        TokenResult result = authenticationService.login(request);
-        return ResponseFactory.ok(result);
     }
 
-    @PostMapping("/logout")
-    public ContentBody<String> logout(@Valid @NotBlank(message = "token is null.") @RequestHeader(value = "Authorization") String token) {
-        Long id = AuthenticatedHolder.get().getAccountId();
-        authenticationService.logout(token, id);
-        return ResponseFactory.ok("success");
+    @PutMapping("/auth/reset/password")
+    public void resetPassword() {
+
     }
-
-
-    // @PostMapping("/logout")
-
 }
