@@ -32,4 +32,9 @@ public class UserDevice extends BaseCreatedAndUpdatedDateTime {
     @Column(name = "created_at")
     @Getter
     private LocalDateTime createdDateTime;
+
+    public UserDevice(String clientId, String rawData) {
+        this.clientId = clientId;
+        this.rawData = rawData;
+    }
 }

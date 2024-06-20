@@ -15,7 +15,7 @@ public class ClientPropertyApplication
     private final static Logger log = LoggerFactory.getLogger(ClientPropertyApplication.class);
 
     @Override
-    public Long create(CreateParameter parameter) {
+    public Long create(ClientPropertyCreateParameter parameter) {
         ClientProperty entity = parameter.toEntity();
         return null;
     }

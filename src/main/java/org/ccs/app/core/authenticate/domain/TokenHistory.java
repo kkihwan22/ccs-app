@@ -32,7 +32,7 @@ public class TokenHistory extends BaseCreatedAndUpdatedDateTime {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @Column(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private UserAccount account;
 
     @Column(name = "client_id")

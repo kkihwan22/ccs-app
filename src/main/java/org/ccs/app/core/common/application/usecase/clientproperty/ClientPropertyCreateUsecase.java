@@ -1,6 +1,7 @@
 package org.ccs.app.core.common.application.usecase.clientproperty;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.ccs.app.core.common.domain.ClientProperty;
@@ -8,12 +9,13 @@ import org.ccs.app.core.share.model.EntityBuildable;
 
 public interface ClientPropertyCreateUsecase {
 
-    Long create(CreateParameter parameter);
+    Long create(ClientPropertyCreateParameter parameter);
 
     @AllArgsConstructor
+    @Builder
     @Getter
     @ToString
-    class CreateParameter implements EntityBuildable<ClientProperty> {
+    class ClientPropertyCreateParameter implements EntityBuildable<ClientProperty> {
         private String key;
         private String propertyValue;
         private Boolean usingIos;

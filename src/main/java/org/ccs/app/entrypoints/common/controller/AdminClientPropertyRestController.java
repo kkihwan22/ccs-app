@@ -3,7 +3,7 @@ package org.ccs.app.entrypoints.common.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.common.application.usecase.clientproperty.ClientPropertyCreateUsecase;
-import org.ccs.app.core.common.application.usecase.clientproperty.ClientPropertyCreateUsecase.CreateParameter;
+import org.ccs.app.core.common.application.usecase.clientproperty.ClientPropertyCreateUsecase.ClientPropertyCreateParameter;
 import org.ccs.app.core.common.application.usecase.clientproperty.ClientPropertyUpdateUsecase;
 import org.ccs.app.entrypoints.common.model.ClientPropertyDTO.CreateRequest;
 import org.ccs.app.entrypoints.common.model.ClientPropertyDTO.Response;
@@ -42,7 +42,7 @@ public class AdminClientPropertyRestController implements BaseRestController {
     @PostMapping("/admin/v1/commons/client-property")
     public ContentBody<SuccessBody<Long>> createClientProperty(@Valid @RequestBody CreateRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
-        Long id = clientPropertyCreateUsecase.create(new CreateParameter(
+        Long id = clientPropertyCreateUsecase.create(new ClientPropertyCreateParameter(
                 request.key(),
                 request.propertyValue(),
                 request.usingIos(),
