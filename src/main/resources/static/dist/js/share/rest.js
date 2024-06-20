@@ -1,11 +1,15 @@
-function send (method, url, data, successCallback, errorCallback) {
-    const token = localStorage.getItem("accessToken");
+function send (method, url, data, headers, successCallback, errorCallback) {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+        console.log("aaa");
+        headers['Authorization'] = "Bearer " + token;
+    }
+
     $.ajax({
         type: method,
         url: url,
-        headers: {
-            "Authorization": "Bearer " + token
-        },
+        headers: headers,
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(data),
@@ -29,7 +33,7 @@ function send (method, url, data, successCallback, errorCallback) {
 }
 
 function reIssueAccessToken(callback) {
-    const token = localStorage.getItem("refreshToken");
+    const token = localStorage.getItem("refresh_token");
 
     $.ajax({
         type: "POST",
@@ -38,7 +42,7 @@ function reIssueAccessToken(callback) {
             "Authorization": "Bearer " + token
         },
         success: function (response) {
-            callback(response.accessToken);
+            callback(response.access_token);
         },
         error: function (xhr, status, error) {
             console.error("Failed to refresh access token:", xhr.responseText);

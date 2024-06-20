@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.ccs.app.core.share.authenticate.AuthenticatedHolder;
-import org.ccs.app.entrypoints.authenticate.model.LoginDTO;
+import org.ccs.app.entrypoints.authenticate.model.LoginDTO.LoginRequest;
+import org.ccs.app.entrypoints.authenticate.model.LoginDTO.TokenResponse;
 import org.ccs.app.entrypoints.authenticate.service.LoginService;
 import org.ccs.app.entrypoints.share.controller.BaseRestController;
 import org.ccs.app.entrypoints.share.controller.ResponseFactory;
@@ -21,9 +22,9 @@ public class LoginRestController implements BaseRestController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ContentBody<LoginDTO.TokenResponse> login(@Valid @RequestBody LoginDTO.LoginRequest request, BindingResult bindingResult) {
+    public ContentBody<TokenResponse> login(@Valid @RequestBody LoginRequest request, BindingResult bindingResult) {
         hasError(bindingResult);
-        LoginDTO.TokenResponse response = loginService.login(request);
+        TokenResponse response = loginService.login(request);
         return ResponseFactory.ok(response);
     }
 
@@ -35,7 +36,7 @@ public class LoginRestController implements BaseRestController {
     }
 
     @PostMapping("/auth/reissue/access-token")
-    public ContentBody<LoginDTO.TokenResponse> reIssuedAccessToken(@RequestHeader(value = "Authorization") String token) {
+    public ContentBody<TokenResponse> reIssuedAccessToken(@RequestHeader(value = "Authorization") String token) {
         return null;
     }
 }

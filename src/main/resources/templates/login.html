@@ -36,12 +36,12 @@
       let data = {
         email: $("#username").val(),
         password: $("#password").val()
-      }
+      };
 
-      send("POST" ,"/login" ,data, function (response) {
+      send("POST" ,"/login" ,data, {}, function (response) {
       console.log(response);
-        localStorage.setItem("accessToken", response.contents.access_token);
-        localStorage.setItem("refreshToken", response.contents.refresh_token);
+        localStorage.setItem("access_token", response.contents.access_token);
+        localStorage.setItem("refresh_token", response.contents.refresh_token);
         window.location.href = "/index";
       }, function (xhr, status, error) {});
     });

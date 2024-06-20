@@ -38,10 +38,7 @@ public class LoginServiceImpl implements LoginService {
             throw new BusinessException(ErrorCode.NOT_VERIFIED_EMAIL);
         }
 
-
-        String accessToken = tokenIssueUsecase.issued(account, JWTType.ACCESS);
-        String refreshToken = tokenIssueUsecase.issued(account, JWTType.REFRESH);
-        return TokenResponse.of(accessToken, refreshToken);
+        return TokenResponse.of(tokenIssueUsecase.issued(account, JWTType.ACCESS), tokenIssueUsecase.issued(account, JWTType.REFRESH));
     }
 
     @Override

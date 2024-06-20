@@ -26,7 +26,9 @@ public class JWTFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(JWTFilter.class);
     private static final String AUTHORIZATION = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer";
-    private static final String[] exclude = {"/login", "/logout", "/signup", "/pages", "/webjars", "/static", "/dist", "/", "/index", "favicon.ico"};
+    private static final String[] EXCLUDE_PATTERNS = {
+            "/login", "/logout", "/signup", "/pages", "/webjars", "/static", "/dist", "/", "/index", "favicon.ico"
+    };
 
     private JWTUtil jwtUtil;
     private UserAccountJpaRepository userAccountJpaRepository;
@@ -46,8 +48,9 @@ public class JWTFilter implements Filter {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String path = httpServletRequest.getRequestURI();
 
-            if (Arrays.stream(exclude).anyMatch(item -> item.startsWith(path))) {
+            if (isExcludedPath(path)) {
                 chain.doFilter(request, response);
+                return;
             }
 
             String authValue = httpServletRequest.getHeader(AUTHORIZATION);
@@ -66,19 +69,26 @@ public class JWTFilter implements Filter {
         }
     }
 
+    private boolean isExcludedPath(String path) {
+        return Arrays.stream(EXCLUDE_PATTERNS).anyMatch(path::startsWith);
+    }
+
     private String validate(String authValue) {
-        String[] temp = authValue.split(" ");
-        if (temp.length != 2) {
+        String[] parts = authValue.split(" ");
+        if (parts.length != 2) {
             throw new InvalidAccessTokenException();
         }
 
-        if (!TOKEN_PREFIX.contentEquals(temp[0])) {
+        if (!TOKEN_PREFIX.contentEquals(parts[0])) {
             throw new InvalidAccessTokenException();
         }
 
-        if (jwtUtil.verify(temp[1])) {
+        String token = parts[1];
+        if (jwtUtil.verify(token)) {
             throw new InvalidAccessTokenException();
         }
+
+        return token;
     }
 
     /**
