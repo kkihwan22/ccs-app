@@ -4,7 +4,7 @@ function send (method, url, data, headers, successCallback, errorCallback) {
         issueClientIdAndSetCookie();
     }
 
-    headers['client-Id'] = getCookie("clientId");
+    headers['x-client-id'] = getCookie("clientId");
 
     const token = localStorage.getItem("access_token");
     if (token) {

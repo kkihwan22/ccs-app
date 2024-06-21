@@ -24,7 +24,7 @@ public class TokenHistory extends BaseCreatedAndUpdatedDateTime {
     private static final String DEFAULT_VERSION = "v1";
 
     public enum ExpireReason {
-        LOGOUT, EXPIRATION
+        LOGOUT, EXPIRATION, REISSUED
     }
 
     @Id

@@ -7,13 +7,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {
+    private static Integer order = Integer.MIN_VALUE;
 
     @Bean
     public FilterRegistrationBean<MDCFilter> mdcFilter() {
         FilterRegistrationBean<MDCFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new MDCFilter());
         registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(Integer.MIN_VALUE);
+        registrationBean.setOrder(order);
         return registrationBean;
     }
 
@@ -22,7 +23,16 @@ public class FilterConfig {
         FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new CorsFilter());
         registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(1);
+        registrationBean.setOrder(++order);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<UserDeviceGetFilter> userDeviceGetFilter() {
+        FilterRegistrationBean<UserDeviceGetFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new UserDeviceGetFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(++order);
         return registrationBean;
     }
 
@@ -68,7 +78,7 @@ public class FilterConfig {
         FilterRegistrationBean<JWTFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JWTFilter());
         registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(20);
+        registrationBean.setOrder(++order);
         return registrationBean;
     }
 
@@ -77,7 +87,7 @@ public class FilterConfig {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthenticationFilter());
         registrationBean.addUrlPatterns("/api");
-        registrationBean.setOrder(21);
+        registrationBean.setOrder(++order);
         return registrationBean;
     }
 
@@ -86,7 +96,7 @@ public class FilterConfig {
         FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthorizationFilter());
         registrationBean.addUrlPatterns("/admin");
-        registrationBean.setOrder(22);
+        registrationBean.setOrder(++order);
         return registrationBean;
     }
 }

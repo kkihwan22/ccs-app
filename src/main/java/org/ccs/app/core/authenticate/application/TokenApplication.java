@@ -8,11 +8,16 @@ import org.ccs.app.core.authenticate.domain.TokenHistory;
 import org.ccs.app.core.authenticate.domain.UserAccount;
 import org.ccs.app.core.authenticate.infra.repository.TokenHistoryJpaRepository;
 import org.ccs.app.core.authenticate.model.LogoutParameter;
+import org.ccs.app.core.share.authenticate.UserDeviceDetails;
+import org.ccs.app.core.share.authenticate.UserDeviceHolder;
 import org.ccs.app.core.share.authenticate.exception.NoSuchTokenException;
 import org.ccs.app.core.share.authenticate.token.JWTType;
 import org.ccs.app.core.share.authenticate.token.JWTUtil;
+import org.ccs.app.core.share.exception.BusinessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -23,16 +28,15 @@ public class TokenApplication implements TokenIssueUsecase, TokenReissueUsecase,
     @Transactional
     @Override
     public String issued(UserAccount account, JWTType type) {
-        return jwtUtil.issued(type, account.getId());
+        String token = jwtUtil.issued(type, account.getId());
 
-//        TokenHistory tokenHistory = TokenHistory.builder()
-//                .accountId(account.getId())
-//                .token(token)
-//                .expiredAt(result.getExpiredAt())
-//                .build();
-//
-//        tokenHistoryJpaRepository.save(tokenHistory);
+        if (JWTType.REFRESH == type) {
+            UserDeviceDetails userDeviceDetails = UserDeviceHolder.get();
+            String clientId = Optional.ofNullable(userDeviceDetails).orElseThrow(() -> new BusinessException()).clientId(); // TODO: exception 재정의
+            TokenHistory tokenHistory = new TokenHistory(account, clientId, token);
+        }
 
+        return token;
     }
 
     @Override
