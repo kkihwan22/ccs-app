@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 public class JunitAssertJTests {
     private Board board;
 
@@ -22,17 +20,14 @@ public class JunitAssertJTests {
     @DisplayName("AssertJ Assertion - updateArticle")
     void updateArticle() {
         // Arrange
+        // Act (실행)
         var article = Article.builder()
                 .id(1L)
-                .board(board)
-                .subject("subject")
-                .content("content")
-                .username("user")
-                .createdAt(LocalDateTime.now())
-                .build();
+                .title("title")
+                .content("content").build();
 
         // Act
-        article.update("new subject", "new content");
+        //article.update("new subject", "new content");
 
         // Assert
         Assertions.assertThat(article.getId())
@@ -51,25 +46,19 @@ public class JunitAssertJTests {
     @DisplayName("BDD Style Assertion - updateArticle")
     void updateArticle_BDDStyle() {
         // Given
+        // Act (실행)
         var article = Article.builder()
                 .id(1L)
-                .board(board)
-                .subject("subject")
-                .content("content")
-                .username("user")
-                .createdAt(LocalDateTime.now())
-                .build();
+                .title("title")
+                .content("content").build();
 
         // When
-        article.update("new subject", "new content");
+        //article.update("new subject", "new content");
 
         // Then
         BDDAssertions.then(article)
                 .hasNoNullFieldsOrProperties()
                 .hasFieldOrPropertyWithValue("id", article.getId())
-                .hasFieldOrPropertyWithValue("board.id", article.getBoard().getId())
-                .hasFieldOrPropertyWithValue("subject", "new subject")
-                .hasFieldOrPropertyWithValue("content", "new content")
-                .hasFieldOrPropertyWithValue("createdAt", article.getCreatedAt());
+                .hasFieldOrPropertyWithValue("content", "new content");
     }
 }

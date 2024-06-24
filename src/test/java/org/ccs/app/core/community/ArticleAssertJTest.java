@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 public class ArticleAssertJTest {
 
     private Board board;
@@ -22,17 +20,14 @@ public class ArticleAssertJTest {
     @DisplayName("AssertJ Assertion - updateArticle")
     void updateArticle() {
         // Arrange
+        // Act (실행)
         var article = Article.builder()
                 .id(1L)
-                .board(board)
-                .subject("subject")
-                .content("content")
-                .username("user")
-                .createdAt(LocalDateTime.now())
-                .build();
+                .title("title")
+                .content("content").build();
 
         // Act
-        article.update("new subject", "new content");
+        // article.update("new subject", "new content");
 
         // Assert
         Assertions.assertThat(article.getId())

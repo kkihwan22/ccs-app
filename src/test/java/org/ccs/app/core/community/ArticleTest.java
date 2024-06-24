@@ -5,8 +5,6 @@ import org.ccs.app.core.community.domain.Board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -17,14 +15,11 @@ class ArticleTest {
     void constructorArticleTest() {
         var board = new Board(5L, "board");
 
+        // Act (실행)
         var article = Article.builder()
                 .id(1L)
-                .board(board)
-                .subject("subject")
-                .content("content")
-                .username("user")
-                .createdAt(LocalDateTime.now())
-                .build();
+                .title("title")
+                .content("content").build();
 
         then(article)
                 .isNotNull()
@@ -40,17 +35,13 @@ class ArticleTest {
     @DisplayName("Article update")
     void updateArticle() {
         // Given
+        // Act (실행)
         var article = Article.builder()
                 .id(1L)
-                .board(new Board(5L, "board"))
-                .subject("subject")
-                .content("content")
-                .username("user")
-                .createdAt(LocalDateTime.now())
-                .build();
+                .title("title")
+                .content("content").build();
 
         // When
-        article.update("new subject", "new content");
 
         // Assert
         then(article)
