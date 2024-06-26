@@ -5,7 +5,7 @@ spring:
       local: local,common
       dev: dev,common
   config:
-    import: classpath:infra.yml
+    import: classpath:application-infra.yml
 
 ---
 spring:
